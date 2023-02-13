@@ -24,7 +24,6 @@ export const CounterContext = createContext();
 const App = () => {
   const [counter, setCounter] = useState(0);
   const [text, setText] = useState('');
-  // console.log('counter in app : ', counter);
 
   useEffect(() => {
     AsyncStorage.getItem('appCounter')
