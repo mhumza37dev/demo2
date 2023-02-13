@@ -1,6 +1,7 @@
 import {StyleSheet, Text, TextInput, View} from 'react-native';
 import React, {useContext, useEffect} from 'react';
 import {CounterContext} from '../../App';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function TextField(props) {
   const state = useContext(CounterContext);
@@ -11,6 +12,9 @@ export default function TextField(props) {
         value={state.text}
         onChangeText={text => {
           state.setText(text);
+          AsyncStorage.setItem('appText', JSON.stringify(text)).then(varr => {
+            console.log('text saved : ');
+          });
         }}
         style={{
           borderWidth: 1,

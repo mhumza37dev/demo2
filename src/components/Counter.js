@@ -1,6 +1,7 @@
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React, {useContext} from 'react';
 import {CounterContext} from '../../App';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Counter(props) {
   const state = useContext(CounterContext);
@@ -13,7 +14,14 @@ export default function Counter(props) {
       }}>
       <TouchableOpacity
         onPress={() => {
-          state.setCounter(prev => prev - 1);
+          state.setCounter(prev => {
+            AsyncStorage.setItem('appCounter', JSON.stringify(prev - 1)).then(
+              varr => {
+                console.log('text saved : ');
+              },
+            );
+            return prev - 1;
+          });
         }}>
         <Text style={{color: 'black', fontSize: 39}}>-</Text>
       </TouchableOpacity>
@@ -29,7 +37,16 @@ export default function Counter(props) {
       </View>
       <TouchableOpacity
         onPress={() => {
-          state.setCounter(prev => prev + 1);
+          //   state.setCounter(prev => prev + 1);
+
+          state.setCounter(prev => {
+            AsyncStorage.setItem('appCounter', JSON.stringify(prev + 1)).then(
+              varr => {
+                console.log('text saved : ');
+              },
+            );
+            return prev + 1;
+          });
         }}>
         <Text style={{color: 'black', fontSize: 39}}>+</Text>
       </TouchableOpacity>

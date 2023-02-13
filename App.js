@@ -22,29 +22,42 @@ import Demo from './src/screens/Demo';
 export const CounterContext = createContext();
 
 const App = () => {
-  const [counter, setCounter] = useState(0);
-  const [text, setText] = useState('');
+  const [counter, setCounter] = useState(() =>
+    getLocalStorage('appCounter', 0),
+  );
+  const [text, setText] = useState(() => getLocalStorage('appText', ''));
+
+  const value = {counter, setCounter, text, setText};
+
+  function getLocalStorage(key, initialValue) {
+    try {
+      const value = AsyncStorage.getItem(key);
+      return value ? JSON.parse(value) : initialValue;
+    } catch (e) {
+      return initialValue;
+    }
+  }
 
   useEffect(() => {
     AsyncStorage.getItem('appCounter')
       .then(_counter => {
-        console.log({_counter});
+        console.log({_counter: JSON.parse(_counter)});
         if (_counter !== null && _counter !== undefined) {
-          setCounter(Number(_counter));
+          setCounter(Number(JSON.parse(_counter)));
+          // AsyncStorage.removeItem('appCounter');
         }
       })
       .catch(e => {});
     AsyncStorage.getItem('appText')
       .then(_text => {
-        console.log({_text});
+        console.log({_text: JSON.parse(_text)});
         if (_text !== null && _text !== undefined) {
-          setText(_text);
+          setText(JSON.parse(_text));
+          // AsyncStorage.removeItem('appText');
         }
       })
       .catch(e => {});
-  }, []);
-
-  const value = {counter, setCounter, text, setText};
+  }, [counter, text]);
 
   const isDarkMode = useColorScheme() === 'dark';
 

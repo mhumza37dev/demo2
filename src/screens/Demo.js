@@ -9,16 +9,13 @@ import TextField from '../components/TextField';
 export default function Demo() {
   const state = useContext(CounterContext);
 
-  useEffect(() => {
-    console.log(state.text);
-    AsyncStorage.setItem('appCounter', `${state.counter}`);
-    AsyncStorage.setItem('appText', `${state.text}`);
-  }, [state]);
+  console.log(state);
+  useEffect(() => {}, []);
   return (
     <View style={styles.mainStyles}>
       <Counter />
       <TextField />
-      {state.counter >= 5 || state.text.toLowerCase() === 'dnamicro' ? (
+      {state?.counter >= 5 || state?.text?.toLowerCase() === 'dnamicro' ? (
         <Text style={{alignSelf: 'center', fontSize: 20}}>DNA Rocks!</Text>
       ) : null}
 
